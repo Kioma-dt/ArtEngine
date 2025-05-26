@@ -1,0 +1,31 @@
+#ifndef FILTRWIDGET_H
+#define FILTRWIDGET_H
+
+#include <QWidget>
+#include <QException>
+#include <QMessageBox>
+
+namespace Ui {
+class FiltrWidget;
+}
+
+class FiltrWidget : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit FiltrWidget(QWidget *parent = nullptr);
+    ~FiltrWidget();
+
+private:
+    Ui::FiltrWidget *ui;
+
+private slots:
+    void SlotStart();
+    void SlotExit();
+
+signals:
+    void SignalFiltr(int targetValue);
+};
+
+#endif // FILTRWIDGET_H
