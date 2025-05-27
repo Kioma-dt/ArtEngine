@@ -2,20 +2,36 @@
 #define MEMORYREADER_H
 
 #include <windows.h>
+#include <QObject>
+#include <QString>
+#include <QSet>
+#include <tlhelp32.h>
 #include <psapi.h>
 #include <vector>
 #include <QException>
 
-class MemoryReader
+class MemoryReader : public QObject
 {
+
+    Q_OBJECT
+
 private:
-    MemoryReader();
     static std::vector<std::pair<uintptr_t, size_t>> GetRegionInformation(HANDLE hProcess);
 
 public:
-    static std::vector<std::pair<uintptr_t, int>> Find(HANDLE hProcess, int targetValue, uintptr_t startAddress, uintptr_t endAddress);
-    static std::vector<std::pair<uintptr_t, int>> Filter(HANDLE hProcess, const std::vector<std::pair<uintptr_t, int>> addressFounded, int targetValue);
-    static void Write(HANDLE hProcess, const std::vector<std::pair<uintptr_t, int>> addressFounded);
+    explicit MemoryReader(QObject* parent = nullptr) : QObject(parent) {}
+
+public slots:
+    std::vector<std::pair<QString, DWORD>> GetAllProcesses();
+    void Find(DWORD processID, int targetValue, uintptr_t startAddress, uintptr_t endAddress);
+    std::vector<std::pair<uintptr_t, int>> Filter(HANDLE hProcess, const std::vector<std::pair<uintptr_t, int>> addressFounded, int targetValue);
+    void Write(HANDLE hProcess, const std::vector<std::pair<uintptr_t, int>> addressFounded);
+
+signals:
+    void SignalFinishFind(std::vector<std::pair<uintptr_t, int>> addressFounded);
+    void SignalPercentage(int percent);
 };
+
+Q_DECLARE_METATYPE(HANDLE)
 
 #endif // MEMORYREADER_H

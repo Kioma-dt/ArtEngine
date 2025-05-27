@@ -5,9 +5,11 @@
 #include <QPalette>
 #include <QTableWidget>
 #include <QKeyEvent>
+#include <QThread>
 #include <vector>
 #include <windows.h>
 #include <psapi.h>
+#include <QRadioButton>
 #include "findwidget.h"
 #include "memoryreader.h"
 #include "filtrwidget.h"
@@ -30,6 +32,10 @@ private:
     Ui::MainWindow *ui;
     std::vector<std::pair<uintptr_t, int>> addressFounded;
     std::vector<std::pair<uintptr_t, int>> addressFixed;
+    std::vector<std::pair<QString, DWORD>> processes;
+
+    MemoryReader* memoryReader;
+    QThread* threadFind;
 
     FindWidget* findwidget;
     FiltrWidget* filtrwidget;
@@ -40,6 +46,8 @@ private:
     void PrintArrayToTable(const std::vector<std::pair<uintptr_t, int>>& array, QTableWidget *table, int addressColumn, int valueColumn);
     void GetArrayFromTable(std::vector<std::pair<uintptr_t, int>>& array, QTableWidget *table, int addressColumn, int valueColumn);
 
+    DWORD GetProcessID();
+
     void keyPressEvent(QKeyEvent* event) override;
 
 private slots:
@@ -47,6 +55,11 @@ private slots:
     void SlotFiltr();
     void SlotFix();
     void SlotChange();
+    void SlotUpdateProcesses();
+
+    void SlotProgressBarUpdate(int percent);
+
+    void SlotFinishFind(std::vector<std::pair<uintptr_t, int>> founded);
 
     void SlotFindValue(int targetValue,  uintptr_t startAddress, uintptr_t endAddress);
     void SlotFiltrArray(int targetValue);

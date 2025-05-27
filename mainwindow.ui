@@ -92,28 +92,6 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>70</y>
-      <width>209</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="labelTextProcessID">
-       <property name="text">
-        <string>ID Процесса: </string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="lineProcessID"/>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
       <x>50</x>
       <y>530</y>
       <width>461</width>
@@ -161,6 +139,16 @@
       </layout>
      </item>
     </layout>
+   </widget>
+   <widget class="QComboBox" name="comboBoxProcessID">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>70</y>
+      <width>441</width>
+      <height>31</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
