@@ -16,18 +16,52 @@ std::vector<std::pair<uintptr_t, size_t> > MemoryReader::GetRegionInformation(HA
     return base_size;
 }
 
-std::vector<std::pair<uintptr_t, int>> MemoryReader::Find(HANDLE hProcess, int targetValue, uintptr_t startAddress, uintptr_t endAddress)
+std::vector<std::pair<QString, DWORD> > MemoryReader::GetAllProcesses()
 {
+    std::vector<std::pair<QString, DWORD>> processes;
+    QSet<QString> processNames;
+
+    HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if (hSnapshot == INVALID_HANDLE_VALUE) {
+        return processes;
+    }
+
+    PROCESSENTRY32 pe;
+    pe.dwSize = sizeof(PROCESSENTRY32);
+
+    if (Process32First(hSnapshot, &pe)) {
+        do {
+            QString name = QString::fromWCharArray(pe.szExeFile);
+            DWORD ID = pe.th32ProcessID;
+            if(!processNames.contains(name)){
+                processes.push_back(std::make_pair(name, ID));
+                processNames.insert(name);
+            }
+
+        } while (Process32Next(hSnapshot, &pe));
+    }
+
+    CloseHandle(hSnapshot);
+    return processes;
+}
+
+void MemoryReader::Find(DWORD processID, int targetValue, uintptr_t startAddress, uintptr_t endAddress)
+{
+    HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processID);
+
     SYSTEM_INFO sysInfo;
     GetSystemInfo(&sysInfo);
 
     uintptr_t minAddress = (uintptr_t)sysInfo.lpMinimumApplicationAddress;
     uintptr_t maxAddress = (uintptr_t)sysInfo.lpMaximumApplicationAddress;
 
-    SIZE_T bytesRead;
-
     minAddress = startAddress > minAddress ? startAddress : minAddress;
     maxAddress = endAddress < maxAddress ? endAddress : maxAddress;
+
+    SIZE_T bytesRead;
+    SIZE_T bytesTotal = maxAddress - minAddress;
+
+    double percent = 0;
 
     std::vector <std::pair<uintptr_t, size_t>> regionArray = GetRegionInformation(hProcess);
     std::vector<std::pair<uintptr_t, int>> addressFounded;
@@ -44,12 +78,14 @@ std::vector<std::pair<uintptr_t, int>> MemoryReader::Find(HANDLE hProcess, int t
             for (size_t i = 0; i < bytesRead; i++) {
                 if (*(reinterpret_cast<int*>(buffer + i)) == targetValue) {
                     addressFounded.push_back(std::make_pair(region.first + i, targetValue));
+                    percent = static_cast<int>((double)(region.first + i - minAddress) / bytesTotal * 100);
+                    emit SignalPercentage(percent);
                 }
             }
         }
     }
 
-    return addressFounded;
+    emit SignalFinishFind(addressFounded);
 }
 
 std::vector<std::pair<uintptr_t, int> > MemoryReader::Filter(HANDLE hProcess, const std::vector<std::pair<uintptr_t, int>> addressFounded, int targetValue)
