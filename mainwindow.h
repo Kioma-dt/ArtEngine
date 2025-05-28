@@ -13,6 +13,7 @@
 #include "findwidget.h"
 #include "memoryreader.h"
 #include "filtrwidget.h"
+#include "globalkey.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -35,6 +36,7 @@ private:
     std::vector<std::pair<QString, DWORD>> processes;
 
     MemoryReader* memoryReader;
+    GlobalKey* globalKeyProcessor;
     QThread* threadFind;
 
     FindWidget* findwidget;
