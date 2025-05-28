@@ -1,0 +1,14 @@
+release/filtrwidget.o
+release/findwidget.o
+release/globalkey.o
+release/hotkeywidget.o
+release/main.o
+release/mainwindow.o
+release/memoryreader.o
+release/artengine_plugin_import.o
+release/moc_filtrwidget.o
+release/moc_findwidget.o
+release/moc_globalkey.o
+release/moc_hotkeywidget.o
+release/moc_mainwindow.o
+release/moc_memoryreader.o

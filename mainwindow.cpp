@@ -19,6 +19,15 @@ MainWindow::MainWindow(QWidget *parent)
     findwidget = new FindWidget();
     filtrwidget = new FiltrWidget();
 
+    currentHotKey.ctrl = 0;
+    currentHotKey.alt = 1;
+    currentHotKey.shift = 0;
+    currentHotKey.key = Qt::Key_F4;
+    globalKeyProcessor->setCurrentHotKey(currentHotKey);
+    ui->textHotKey->setText(this->GetHotKeyString(currentHotKey));
+
+    hotkeywidget = new HotKeyWidget(currentHotKey.ctrl, currentHotKey.alt, currentHotKey.shift, currentHotKey.key);
+
     ui->tableFounded->setColumnCount(3);
     ui->tableFounded->setHorizontalHeaderLabels(QStringList() << "" << "Адрес" << "Значение");
     ui->tableFounded->resizeColumnsToContents();
@@ -38,11 +47,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->buttonSearch, &QPushButton::clicked, this, &MainWindow::SlotSearch);
     connect(ui->buttonFiltr, &QPushButton::clicked, this, &MainWindow::SlotFiltr);
     connect(ui->buttonFix, &QPushButton::clicked, this, &MainWindow::SlotFix);
+    connect(ui->buttonUnFix, &QPushButton::clicked, this, &MainWindow::SlotUnFix);
     connect(ui->buttonChange, &QPushButton::clicked, this, &MainWindow::SlotChange);
     connect(ui->buttonUpdateProcesses, &QPushButton::clicked, this, &MainWindow::SlotUpdateProcesses);
+    connect(ui->buttonChangeHotKey, &QPushButton::clicked, this, &MainWindow::SlotChangeHotKey);
 
     connect(findwidget, &FindWidget::SignalFind, this, &MainWindow::SlotFindValue);
     connect(filtrwidget, &FiltrWidget::SignalFiltr, this, &MainWindow::SlotFiltrArray);
+    connect(hotkeywidget, &HotKeyWidget::SignalChangeHotKey, this, &MainWindow::SlotReHot);
 }
 
 MainWindow::~MainWindow()
@@ -105,6 +117,23 @@ void MainWindow::GetArrayFromTable(std::vector<std::pair<uintptr_t, int> > &arra
     }
 }
 
+QString MainWindow::GetHotKeyString(HotKey hotKey)
+{
+    QString hotKeyString = "";
+    if(hotKey.ctrl){
+        hotKeyString += "CTRL + ";
+    }
+    if(hotKey.alt){
+        hotKeyString += "ALT + ";
+    }
+    if(hotKey.shift){
+        hotKeyString += "SHIFT + ";
+    }
+    hotKeyString += QKeySequence(hotKey.key).toString(QKeySequence::NativeText);
+
+    return hotKeyString;
+}
+
 DWORD MainWindow::GetProcessID()
 {
     int index = ui->comboBoxProcessID->currentIndex();
@@ -144,6 +173,29 @@ void MainWindow::SlotFix()
     this->PrintArrayToTable(addressFixed, ui->tableFixed, 2, 3);
 }
 
+void MainWindow::SlotUnFix()
+{
+    addressFixed.clear();
+    QTableWidgetItem* item;
+    uintptr_t address;
+    int value;
+    bool ok;
+
+    for(int i = 0; i < ui->tableFixed->rowCount(); i++){
+        QWidget* cell_widget = ui->tableFixed->cellWidget(i, 0);
+        QRadioButton* radioButton = cell_widget->findChild<QRadioButton*>();
+        if(!radioButton->isChecked()){
+            item = ui->tableFixed->item(i, 2);
+            address = item->text().toULongLong(&ok, 16);
+            item = ui->tableFixed->item(i, 3);
+            value = item->text().toInt();
+            addressFixed.push_back(std::make_pair(address, value));
+        }
+    }
+
+    this->PrintArrayToTable(addressFixed, ui->tableFixed, 2, 3);
+}
+
 void MainWindow::SlotChange()
 {
     try{
@@ -179,6 +231,11 @@ void MainWindow::SlotUpdateProcesses()
         QString item = QString("%1 PID: %2").arg(process.first).arg(process.second);
         ui->comboBoxProcessID->addItem(item);
     }
+}
+
+void MainWindow::SlotChangeHotKey()
+{
+    hotkeywidget->show();
 }
 
 
@@ -229,5 +286,16 @@ void MainWindow::SlotFiltrArray(int targetValue)
     catch(const QException& ex){
         QMessageBox::warning(this, "Нельзя начать фильтрацию", ex.what());
     }
+}
+
+void MainWindow::SlotReHot(bool ctrl, bool alt, bool shift, Qt::Key key)
+{
+    currentHotKey.ctrl = ctrl;
+    currentHotKey.alt = alt;
+    currentHotKey.shift = shift;
+    currentHotKey.key = key;
+
+    globalKeyProcessor->setCurrentHotKey(currentHotKey);
+    ui->textHotKey->setText(this->GetHotKeyString(currentHotKey));
 }
 
