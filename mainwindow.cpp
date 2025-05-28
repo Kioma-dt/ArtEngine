@@ -14,6 +14,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(memoryReader, &MemoryReader::SignalPercentage, this, &MainWindow::SlotProgressBarUpdate);
     connect(memoryReader, &MemoryReader::SignalFinishFind, this, &MainWindow::SlotFinishFind);
 
+    globalKeyProcessor = new GlobalKey(this);
+    globalKeyProcessor->installHook();
+    connect(globalKeyProcessor, &GlobalKey::SignalHotKeyPressed, this, &MainWindow::SlotChange);
+
     addressFounded = std::vector<std::pair<uintptr_t, int>>();
     addressFixed = std::vector<std::pair<uintptr_t, int>>();
     processes = std::vector<std::pair<QString, DWORD>>();
@@ -22,9 +26,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->tableFounded->setColumnCount(3);
     ui->tableFounded->setHorizontalHeaderLabels(QStringList() << "" << "Адрес" << "Значение");
+    ui->tableFounded->resizeColumnsToContents();
+    ui->tableFounded->resizeRowsToContents();
+    ui->tableFounded->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableFounded->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     ui->tableFixed->setColumnCount(4);
-    ui->tableFixed->setHorizontalHeaderLabels(QStringList() << "" << "Название" << "Адрес" << "Значение");
+    ui->tableFixed->setHorizontalHeaderLabels(QStringList() << "" << "Название" << "Адрес" << "Значение");    
+    ui->tableFixed->resizeColumnsToContents();
+    ui->tableFixed->resizeRowsToContents();
+    ui->tableFixed->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableFixed->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     this->ProgressBarHide();
     this->SlotUpdateProcesses();
@@ -33,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->buttonFiltr, &QPushButton::clicked, this, &MainWindow::SlotFiltr);
     connect(ui->buttonFix, &QPushButton::clicked, this, &MainWindow::SlotFix);
     connect(ui->buttonChange, &QPushButton::clicked, this, &MainWindow::SlotChange);
+    connect(ui->buttonUpdateProcesses, &QPushButton::clicked, this, &MainWindow::SlotUpdateProcesses);
 
     connect(findwidget, &FindWidget::SignalFind, this, &MainWindow::SlotFindValue);
     connect(filtrwidget, &FiltrWidget::SignalFiltr, this, &MainWindow::SlotFiltrArray);
@@ -179,8 +192,9 @@ void MainWindow::SlotChange()
             throw QException();
         }
 
-        this->GetArrayFromTable(addressFixed, ui->tableFixed, 2, 3);
-        memoryReader->Write(hProcess, addressFixed);
+        std::vector<std::pair<uintptr_t, int>>temp_vector;
+        this->GetArrayFromTable(temp_vector, ui->tableFixed, 2, 3);
+        memoryReader->Write(hProcess, temp_vector);
 
         CloseHandle(hProcess);
     }

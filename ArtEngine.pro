@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     filtrwidget.cpp \
     findwidget.cpp \
+    globalkey.cpp \
     main.cpp \
     mainwindow.cpp \
     memoryreader.cpp
@@ -18,6 +19,7 @@ SOURCES += \
 HEADERS += \
     filtrwidget.h \
     findwidget.h \
+    globalkey.h \
     mainwindow.h \
     memoryreader.h
 
