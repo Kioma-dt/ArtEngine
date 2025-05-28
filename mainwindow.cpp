@@ -8,11 +8,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     memoryReader = new MemoryReader();
-    threadFind = new QThread();
-    memoryReader->moveToThread(threadFind);
-    threadFind->start();
-    connect(memoryReader, &MemoryReader::SignalPercentage, this, &MainWindow::SlotProgressBarUpdate);
-    connect(memoryReader, &MemoryReader::SignalFinishFind, this, &MainWindow::SlotFinishFind);
 
     globalKeyProcessor = new GlobalKey(this);
     globalKeyProcessor->installHook();
@@ -38,7 +33,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableFixed->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableFixed->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
-    this->ProgressBarHide();
     this->SlotUpdateProcesses();
 
     connect(ui->buttonSearch, &QPushButton::clicked, this, &MainWindow::SlotSearch);
@@ -55,25 +49,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
-void MainWindow::ProgressBarShow()
-{
-    ui->progressBar->show();
-    ui->labelTextTimePass->show();
-    ui->labelTextTimeLeft->show();
-    ui->labelTimePass->show();
-    ui->labelTimeLeft->show();
-}
-
-void MainWindow::ProgressBarHide()
-{
-    ui->progressBar->hide();
-    ui->labelTextTimePass->hide();
-    ui->labelTextTimeLeft->hide();
-    ui->labelTimePass->hide();
-    ui->labelTimeLeft->hide();
-}
-
 
 void MainWindow::PrintArrayToTable(const std::vector<std::pair<uintptr_t, int> > &array, QTableWidget* table, int addressColumn, int valueColumn)
 {
@@ -135,14 +110,6 @@ DWORD MainWindow::GetProcessID()
     int index = ui->comboBoxProcessID->currentIndex();
     return processes.at(index).second;
 }
-
-void MainWindow::keyPressEvent(QKeyEvent *event)
-{
-    if(event->key() == Qt::Key_L){
-        this->SlotChange();
-    }
-}
-
 void MainWindow::SlotSearch()
 {
     try{
@@ -206,6 +173,7 @@ void MainWindow::SlotChange()
 void MainWindow::SlotUpdateProcesses()
 {
     processes = memoryReader->GetAllProcesses();
+    ui->comboBoxProcessID->clear();
 
     for(auto process : processes){
         QString item = QString("%1 PID: %2").arg(process.first).arg(process.second);
@@ -213,16 +181,6 @@ void MainWindow::SlotUpdateProcesses()
     }
 }
 
-void MainWindow::SlotProgressBarUpdate(int percent)
-{
-    ui->progressBar->setValue(percent);
-}
-
-void MainWindow::SlotFinishFind(std::vector<std::pair<uintptr_t, int> > founded)
-{
-    addressFounded = founded;
-    PrintArrayToTable(addressFounded, ui->tableFounded, 1, 2);
-}
 
 void MainWindow::SlotFindValue(int targetValue, uintptr_t startAddress, uintptr_t endAddress)
 {
@@ -239,18 +197,8 @@ void MainWindow::SlotFindValue(int targetValue, uintptr_t startAddress, uintptr_
             throw QException();
         }
 
-        addressFounded.clear();
-
-
-        this->ProgressBarShow();
-        QMetaObject::invokeMethod(memoryReader, "Find",
-                                                Qt::QueuedConnection,
-                                  Q_ARG(DWORD, processID),
-                                  Q_ARG(int, targetValue),
-                                  Q_ARG(uintptr_t, startAddress),
-                                  Q_ARG(uintptr_t, endAddress));
-
-
+        addressFounded = memoryReader->Find(hProcess, targetValue, startAddress, endAddress);
+        this->PrintArrayToTable(addressFounded, ui->tableFounded, 1, 2);
         CloseHandle(hProcess);
     }
     catch(const QException& ex){
