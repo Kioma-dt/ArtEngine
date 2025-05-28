@@ -23,15 +23,9 @@ public:
 
 public slots:
     std::vector<std::pair<QString, DWORD>> GetAllProcesses();
-    void Find(DWORD processID, int targetValue, uintptr_t startAddress, uintptr_t endAddress);
+    std::vector<std::pair<uintptr_t, int>> Find(HANDLE hProcess, int targetValue, uintptr_t startAddress, uintptr_t endAddress);
     std::vector<std::pair<uintptr_t, int>> Filter(HANDLE hProcess, const std::vector<std::pair<uintptr_t, int>> addressFounded, int targetValue);
     void Write(HANDLE hProcess, const std::vector<std::pair<uintptr_t, int>> addressFounded);
-
-signals:
-    void SignalFinishFind(std::vector<std::pair<uintptr_t, int>> addressFounded);
-    void SignalPercentage(int percent);
 };
-
-Q_DECLARE_METATYPE(HANDLE)
 
 #endif // MEMORYREADER_H

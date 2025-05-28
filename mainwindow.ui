@@ -89,57 +89,6 @@
      <string>Изменить</string>
     </property>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>530</y>
-      <width>461</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="layoutProgressBar">
-     <item>
-      <widget class="QProgressBar" name="progressBar">
-       <property name="value">
-        <number>24</number>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <item>
-        <widget class="QLabel" name="labelTextTimePass">
-         <property name="text">
-          <string>Прошло Времени: </string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="labelTimePass">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="labelTextTimeLeft">
-         <property name="text">
-          <string>Осталось Времени: </string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="labelTimeLeft">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </widget>
    <widget class="QComboBox" name="comboBoxProcessID">
     <property name="geometry">
      <rect>

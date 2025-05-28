@@ -45,10 +45,8 @@ std::vector<std::pair<QString, DWORD> > MemoryReader::GetAllProcesses()
     return processes;
 }
 
-void MemoryReader::Find(DWORD processID, int targetValue, uintptr_t startAddress, uintptr_t endAddress)
+std::vector<std::pair<uintptr_t, int>> MemoryReader::Find(HANDLE hProcess, int targetValue, uintptr_t startAddress, uintptr_t endAddress)
 {
-    HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processID);
-
     SYSTEM_INFO sysInfo;
     GetSystemInfo(&sysInfo);
 
@@ -59,10 +57,6 @@ void MemoryReader::Find(DWORD processID, int targetValue, uintptr_t startAddress
     maxAddress = endAddress < maxAddress ? endAddress : maxAddress;
 
     SIZE_T bytesRead;
-    SIZE_T bytesTotal = maxAddress - minAddress;
-
-    double percent = 0;
-
     std::vector <std::pair<uintptr_t, size_t>> regionArray = GetRegionInformation(hProcess);
     std::vector<std::pair<uintptr_t, int>> addressFounded;
 
@@ -78,14 +72,12 @@ void MemoryReader::Find(DWORD processID, int targetValue, uintptr_t startAddress
             for (size_t i = 0; i < bytesRead; i++) {
                 if (*(reinterpret_cast<int*>(buffer + i)) == targetValue) {
                     addressFounded.push_back(std::make_pair(region.first + i, targetValue));
-                    percent = static_cast<int>((double)(region.first + i - minAddress) / bytesTotal * 100);
-                    emit SignalPercentage(percent);
                 }
             }
         }
     }
 
-    emit SignalFinishFind(addressFounded);
+    return addressFounded;
 }
 
 std::vector<std::pair<uintptr_t, int> > MemoryReader::Filter(HANDLE hProcess, const std::vector<std::pair<uintptr_t, int>> addressFounded, int targetValue)
