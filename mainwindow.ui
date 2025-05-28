@@ -112,6 +112,45 @@
      <string>Обновить Процессы</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="buttonUnFix">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>340</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>UnFix</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textHotKey">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>540</y>
+      <width>141</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="textInteractionFlags">
+     <set>Qt::NoTextInteraction</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="buttonChangeHotKey">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>540</y>
+      <width>221</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Поменять Горячую Клавишу</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

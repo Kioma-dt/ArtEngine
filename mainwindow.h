@@ -14,6 +14,7 @@
 #include "memoryreader.h"
 #include "filtrwidget.h"
 #include "globalkey.h"
+#include "hotkeywidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -38,21 +39,29 @@ private:
     MemoryReader* memoryReader;
     GlobalKey* globalKeyProcessor;
 
+    HotKey currentHotKey;
+
     FindWidget* findwidget;
     FiltrWidget* filtrwidget;
+    HotKeyWidget* hotkeywidget;
 
     void PrintArrayToTable(const std::vector<std::pair<uintptr_t, int>>& array, QTableWidget *table, int addressColumn, int valueColumn);
     void GetArrayFromTable(std::vector<std::pair<uintptr_t, int>>& array, QTableWidget *table, int addressColumn, int valueColumn);
+
+    QString GetHotKeyString(HotKey hotKey);
 
     DWORD GetProcessID();
 private slots:
     void SlotSearch();
     void SlotFiltr();
     void SlotFix();
+    void SlotUnFix();
     void SlotChange();
     void SlotUpdateProcesses();
+    void SlotChangeHotKey();
 
     void SlotFindValue(int targetValue,  uintptr_t startAddress, uintptr_t endAddress);
     void SlotFiltrArray(int targetValue);
+    void SlotReHot(bool ctrl, bool alt, bool shift, Qt::Key key);
 };
 #endif // MAINWINDOW_H
