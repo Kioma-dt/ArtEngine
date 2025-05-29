@@ -103,7 +103,7 @@ void MemoryReader::Write(HANDLE hProcess, const std::vector<std::pair<uintptr_t,
     for(auto [address, value] : addressFounded){
         int new_value = value;
         if(!WriteProcessMemory(hProcess, (LPVOID)address, &new_value, sizeof(new_value), NULL)){
-            throw QException();
+            throw std::runtime_error("Не удалось записать");
         }
     }
 }

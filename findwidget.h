@@ -2,7 +2,7 @@
 #define FINDWIDGET_H
 
 #include <QWidget>
-#include <QException>
+#include <stdexcept>
 #include <QMessageBox>
 
 namespace Ui {
@@ -19,6 +19,9 @@ public:
 
 private:
     Ui::FindWidget *ui;
+
+    QFont labelFont;
+
 
 private slots:
     void SlotStart();
