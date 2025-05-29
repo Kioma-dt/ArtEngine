@@ -62,9 +62,10 @@
 ## 🔗 Скачать
 
 📦 Последняя версия доступна по ссылке:  
-👉 [Скачать ArtEngine с Google Диска](https://drive.google.com/your-link-here)
+👉 [Скачать ArtEngine с Google Диска](https://drive.google.com/file/d/1kh1dzLCCBfPrDVri56Aqh8xPBbtn1NIB/view?usp=drive_link)
 
 ---
 
 ## 🤝 Контакты и обратная связь
-
+- 📬 Email: **www.kioma220@gmail.com**
+- 💬 Telegram: [@avramenkor](https://t.me/avramenkor)
