@@ -10,27 +10,33 @@ RC_FILE = images/app_icon.rc
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 SOURCES += \
-    filtrwidget.cpp \
-    findwidget.cpp \
-    globalkey.cpp \
-    hotkeywidget.cpp \
-    main.cpp \
-    mainwindow.cpp \
-    memoryreader.cpp
+    globalkey/globalkey.cpp \
+    main/main.cpp \
+    main/mainwindow.cpp \
+    memoryreader/memoryreader.cpp \
+    widgets/filtrwidget.cpp \
+    widgets/findwidget.cpp \
+    widgets/hotkeywidget.cpp
 
 HEADERS += \
-    filtrwidget.h \
-    findwidget.h \
-    globalkey.h \
-    hotkeywidget.h \
-    mainwindow.h \
-    memoryreader.h
+    globalkey/globalkey.h \
+    main/mainwindow.h \
+    main/ui_mainwindow.h \
+    memoryreader/memoryreader.h \
+    widgets/filtrwidget.h \
+    widgets/findwidget.h \
+    widgets/hotkeywidget.h \
+    widgets/ui_filtrwidget.h \
+    widgets/ui_findwidget.h \
+    widgets/ui_hotkeywidget.h
+
 
 FORMS += \
-    filtrwidget.ui \
-    findwidget.ui \
-    hotkeywidget.ui \
-    mainwindow.ui
+    main/mainwindow.ui \
+    widgets/filtrwidget.ui \
+    widgets/findwidget.ui \
+    widgets/hotkeywidget.ui
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
