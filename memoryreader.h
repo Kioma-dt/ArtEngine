@@ -8,7 +8,7 @@
 #include <tlhelp32.h>
 #include <psapi.h>
 #include <vector>
-#include <QException>
+#include <stdexcept>
 
 class MemoryReader : public QObject
 {

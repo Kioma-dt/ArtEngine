@@ -6,6 +6,104 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setFixedSize(1280, 680);
+    this->setWindowTitle("ArtEngine");
+    this->setWindowIcon(QIcon("images/icon.ico"));
+
+    ui->buttonSearch->setIcon(QIcon("images/loop.png"));
+    ui->buttonFiltr->setIcon(QIcon("images/filtr.png"));
+    ui->buttonChange->setIcon(QIcon("images/change.png"));
+    ui->buttonChangeHotKey->setIcon(QIcon("images/hotkey.png"));
+    ui->buttonFix->setIcon(QIcon("images/arrow.png"));
+    ui->buttonUnFix->setIcon(QIcon("images/crossed.png"));
+
+    labelFont.setPointSize(14);
+    buttonFont.setPointSize(10);
+    buttonFont.setBold(true);
+    tableFont.setPointSize(12);
+
+    ui->labelHotKey->setFont(labelFont);
+    ui->labelHotKey->setAlignment(Qt::AlignCenter);
+    ui->labelTextHotKey->setFont(labelFont);
+    ui->comboBoxProcessID->setFont(labelFont);
+
+    QString buttonStyle = R"(
+    QPushButton {
+        background-color: rgb(100, 150, 200);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    QPushButton:hover {
+        background-color: rgb(70, 110, 150);
+    }
+
+    QPushButton:pressed {
+        background-color: rgb(30, 70, 110);
+    }
+
+    QPushButton:disabled {
+        background-color: rgb(100, 100, 100);
+        color: rgb(180, 180, 180);
+    }
+    )";
+
+    ui->buttonSearch->setStyleSheet(buttonStyle);
+    ui->buttonFiltr->setStyleSheet(buttonStyle);
+    ui->buttonChange->setStyleSheet(buttonStyle);
+    ui->buttonChangeHotKey->setStyleSheet(buttonStyle);
+    ui->buttonUpdateProcesses->setStyleSheet(buttonStyle);
+    ui->buttonFix->setStyleSheet(buttonStyle);
+    ui->buttonUnFix->setStyleSheet(buttonStyle);
+
+    ui->tableFounded->setStyleSheet(R"(
+    QHeaderView::section {
+        background-color: rgb(100, 150, 200);
+        color: rgb(255, 255, 255);
+        padding: 4px;
+        border: 1px solid rgb(80, 80, 80);
+        font-size: 20px;
+        font-weight: bold;
+    }
+    )");
+
+    ui->tableFixed->setStyleSheet(R"(
+    QHeaderView::section {
+        background-color: rgb(100, 150, 200);
+        color: rgb(255, 255, 255);
+        padding: 4px;
+        border: 1px solid rgb(80, 80, 80);
+        font-size: 20px;
+        font-weight: bold;
+    }
+    )");
+    ui->tableFixed->setFont(tableFont);
+    ui->tableFounded->setFont(tableFont);
+
+    ui->comboBoxProcessID->setStyleSheet(R"(
+    QComboBox {
+        background-color: rgb(60, 90, 120);
+        color: rgb(252, 209, 22);
+        border: 1px solid rgb(50, 70, 100);
+        padding: 4px;
+        font-size: 20px;
+        font-weight: bold;
+        border-radius: 4px;
+    }
+
+    QComboBox QAbstractItemView {
+        background-color: rgb(70, 100, 130);
+        color: rgb(252, 209, 22);
+        selection-background-color: rgb(90, 120, 150);
+        selection-color: yellow;
+        font-size: 20px;
+    }
+    )");
+
 
     memoryReader = new MemoryReader();
 
@@ -17,30 +115,38 @@ MainWindow::MainWindow(QWidget *parent)
     addressFixed = std::vector<std::pair<uintptr_t, int>>();
     processes = std::vector<std::pair<QString, DWORD>>();
     findwidget = new FindWidget();
+    findwidget->setWindowTitle("Поиск");
     filtrwidget = new FiltrWidget();
+    filtrwidget->setWindowTitle("Фильтрация");
 
     currentHotKey.ctrl = 0;
     currentHotKey.alt = 1;
     currentHotKey.shift = 0;
     currentHotKey.key = Qt::Key_F4;
     globalKeyProcessor->setCurrentHotKey(currentHotKey);
-    ui->textHotKey->setText(this->GetHotKeyString(currentHotKey));
+    ui->labelHotKey->setText(this->GetHotKeyString(currentHotKey));
 
     hotkeywidget = new HotKeyWidget(currentHotKey.ctrl, currentHotKey.alt, currentHotKey.shift, currentHotKey.key);
 
     ui->tableFounded->setColumnCount(3);
     ui->tableFounded->setHorizontalHeaderLabels(QStringList() << "" << "Адрес" << "Значение");
+    ui->tableFounded->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    ui->tableFounded->horizontalHeader()->setStretchLastSection(true);
+    ui->tableFounded->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tableFounded->resizeColumnsToContents();
     ui->tableFounded->resizeRowsToContents();
-    ui->tableFounded->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableFounded->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->tableFounded->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
 
     ui->tableFixed->setColumnCount(4);
-    ui->tableFixed->setHorizontalHeaderLabels(QStringList() << "" << "Название" << "Адрес" << "Значение");    
+    ui->tableFixed->setHorizontalHeaderLabels(QStringList() << "" << "Название" << "Адрес" << "Значение");
+    ui->tableFixed->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    ui->tableFixed->horizontalHeader()->setStretchLastSection(true);
+    ui->tableFixed->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tableFixed->resizeColumnsToContents();
     ui->tableFixed->resizeRowsToContents();
-    ui->tableFixed->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableFixed->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->tableFixed->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
 
     this->SlotUpdateProcesses();
 
@@ -55,6 +161,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(findwidget, &FindWidget::SignalFind, this, &MainWindow::SlotFindValue);
     connect(filtrwidget, &FiltrWidget::SignalFiltr, this, &MainWindow::SlotFiltrArray);
     connect(hotkeywidget, &HotKeyWidget::SignalChangeHotKey, this, &MainWindow::SlotReHot);
+
 }
 
 MainWindow::~MainWindow()
@@ -136,35 +243,22 @@ QString MainWindow::GetHotKeyString(HotKey hotKey)
 
 DWORD MainWindow::GetProcessID()
 {
-    int index = ui->comboBoxProcessID->currentIndex();
+    size_t index = ui->comboBoxProcessID->currentIndex();
+    if(processes.size() <= index){
+        throw std::runtime_error("Неверное ID процесса");
+    }
     return processes.at(index).second;
 }
 void MainWindow::SlotSearch()
 {
-    try{
-        bool ok_id = true;
-        if(!ok_id){
-            throw QException();
-        }
-        findwidget->show();
-    }
-    catch(const QException& ex){
-        QMessageBox::warning(this, "Нельзя начать поиск", ex.what());
-    }
+    findwidget->setWindowModality(Qt::ApplicationModal);
+    findwidget->show();
 }
 
 void MainWindow::SlotFiltr()
 {
-    try{
-        bool ok_id = true;
-        if(!ok_id){
-            throw QException();
-        }
-        filtrwidget->show();
-    }
-    catch(const QException& ex){
-        QMessageBox::warning(this, "Нельзя начать поиск", ex.what());
-    }
+    filtrwidget->setWindowModality(Qt::ApplicationModal);
+    filtrwidget->show();
 }
 
 void MainWindow::SlotFix()
@@ -200,15 +294,11 @@ void MainWindow::SlotChange()
 {
     try{
         DWORD processID;
-        bool ok_id = true;
         processID = this->GetProcessID();
-        if(!ok_id){
-            throw QException();
-        }
 
         HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processID);
         if(hProcess == NULL){
-            throw QException();
+            throw std::runtime_error("Не удалось открыть процесс");
         }
 
         std::vector<std::pair<uintptr_t, int>>temp_vector;
@@ -217,7 +307,7 @@ void MainWindow::SlotChange()
 
         CloseHandle(hProcess);
     }
-    catch(const QException& ex){
+    catch(const std::runtime_error& ex){
         QMessageBox::warning(this, "Нельзя изменить", ex.what());
     }
 }
@@ -235,6 +325,7 @@ void MainWindow::SlotUpdateProcesses()
 
 void MainWindow::SlotChangeHotKey()
 {
+    hotkeywidget->setWindowModality(Qt::ApplicationModal);
     hotkeywidget->show();
 }
 
@@ -243,22 +334,18 @@ void MainWindow::SlotFindValue(int targetValue, uintptr_t startAddress, uintptr_
 {
     try{
         DWORD processID;
-        bool ok_id = true;
         processID = this->GetProcessID();
-        if(!ok_id){
-            throw QException();
-        }
 
         HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processID);
         if(hProcess == NULL){
-            throw QException();
+            throw std::runtime_error("Не удалось открыть процесс");
         }
 
         addressFounded = memoryReader->Find(hProcess, targetValue, startAddress, endAddress);
         this->PrintArrayToTable(addressFounded, ui->tableFounded, 1, 2);
         CloseHandle(hProcess);
     }
-    catch(const QException& ex){
+    catch(const std::runtime_error& ex){
         QMessageBox::warning(this, "Нельзя начать поиск", ex.what());
     }
 }
@@ -267,15 +354,11 @@ void MainWindow::SlotFiltrArray(int targetValue)
 {
     try{
         DWORD processID;
-        bool ok_id = true;
         processID = this->GetProcessID();
-        if(!ok_id){
-            throw QException();
-        }
 
         HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processID);
         if(hProcess == NULL){
-            throw QException();
+            throw std::runtime_error("Не удалось открыть процесс");
         }
 
         addressFounded = memoryReader->Filter(hProcess, addressFounded, targetValue);
@@ -283,7 +366,7 @@ void MainWindow::SlotFiltrArray(int targetValue)
 
         CloseHandle(hProcess);
     }
-    catch(const QException& ex){
+    catch(const std::runtime_error& ex){
         QMessageBox::warning(this, "Нельзя начать фильтрацию", ex.what());
     }
 }
@@ -296,6 +379,6 @@ void MainWindow::SlotReHot(bool ctrl, bool alt, bool shift, Qt::Key key)
     currentHotKey.key = key;
 
     globalKeyProcessor->setCurrentHotKey(currentHotKey);
-    ui->textHotKey->setText(this->GetHotKeyString(currentHotKey));
+    ui->labelHotKey->setText(this->GetHotKeyString(currentHotKey));
 }
 

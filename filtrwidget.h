@@ -2,7 +2,7 @@
 #define FILTRWIDGET_H
 
 #include <QWidget>
-#include <QException>
+#include <stdexcept>
 #include <QMessageBox>
 
 namespace Ui {
@@ -19,6 +19,8 @@ public:
 
 private:
     Ui::FiltrWidget *ui;
+
+    QFont labelFont;
 
 private slots:
     void SlotStart();

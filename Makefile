@@ -33,7 +33,7 @@ IDC           = idc
 IDL           = widl
 ZIP           = zip -r -9
 DEF_FILE      = 
-RES_FILE      = 
+RES_FILE      = app_icon_res.o
 SED           = $(QMAKE) -install sed
 MOVE          = move
 SUBTARGETS    =  \
@@ -370,7 +370,8 @@ Makefile: ArtEngine.pro ../../MSYS2/mingw64/qt5-static/share/qt5/mkspecs/win32-g
 		../../MSYS2/mingw64/qt5-static/lib/Qt5Gui.prl \
 		../../MSYS2/mingw64/qt5-static/lib/Qt5Core.prl \
 		../../MSYS2/mingw64/qt5-static/lib/qtmain.prl \
-		../../MSYS2/mingw64/qt5-static/share/qt5/mkspecs/features/build_pass.prf
+		../../MSYS2/mingw64/qt5-static/share/qt5/mkspecs/features/build_pass.prf \
+		resources.qrc
 	$(QMAKE) -o Makefile ArtEngine.pro -spec win32-g++ "CONFIG+=qtquickcompiler"
 ../../MSYS2/mingw64/qt5-static/share/qt5/mkspecs/features/spec_pre.prf:
 ../../MSYS2/mingw64/qt5-static/share/qt5/mkspecs/qdevice.pri:
@@ -673,6 +674,7 @@ ArtEngine.pro:
 ../../MSYS2/mingw64/qt5-static/lib/Qt5Core.prl:
 ../../MSYS2/mingw64/qt5-static/lib/qtmain.prl:
 ../../MSYS2/mingw64/qt5-static/share/qt5/mkspecs/features/build_pass.prf:
+resources.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ArtEngine.pro -spec win32-g++ "CONFIG+=qtquickcompiler"
 

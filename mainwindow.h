@@ -5,6 +5,7 @@
 #include <QPalette>
 #include <QTableWidget>
 #include <QKeyEvent>
+#include <QPalette>
 #include <vector>
 #include <QHBoxLayout>
 #include <windows.h>
@@ -44,6 +45,10 @@ private:
     FindWidget* findwidget;
     FiltrWidget* filtrwidget;
     HotKeyWidget* hotkeywidget;
+
+    QFont labelFont;
+    QFont buttonFont;
+    QFont tableFont;
 
     void PrintArrayToTable(const std::vector<std::pair<uintptr_t, int>>& array, QTableWidget *table, int addressColumn, int valueColumn);
     void GetArrayFromTable(std::vector<std::pair<uintptr_t, int>>& array, QTableWidget *table, int addressColumn, int valueColumn);

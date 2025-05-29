@@ -22,6 +22,8 @@ private:
     Qt::Key key;
     bool getingKey = false;
 
+    QFont labelFont;
+
     void keyPressEvent(QKeyEvent* event) override;
 
 private slots:
