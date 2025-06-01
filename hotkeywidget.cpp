@@ -7,6 +7,7 @@ HotKeyWidget::HotKeyWidget(bool ct, bool al, bool sh, Qt::Key k, QWidget *parent
     ctrl(ct), alt(al), shift(sh), key(k)
 {
     ui->setupUi(this);
+    this->setFixedSize(600, 420);
 
     QString buttonStyle = R"(
     QPushButton {
@@ -84,7 +85,13 @@ HotKeyWidget::~HotKeyWidget()
 
 void HotKeyWidget::keyPressEvent(QKeyEvent *event)
 {
-    if(getingKey){
+    if (event->key() == Qt::Key_Shift || event->key() == Qt::Key_Control ||
+        event->key() == Qt::Key_Alt || event->key() == Qt::Key_Meta ||
+        event->key() == Qt::Key_CapsLock || event->key() == Qt::Key_NumLock ||
+        event->key() == Qt::Key_ScrollLock || event->key() == Qt::Key_Space) {
+        return;
+    }
+    if(getingKey && event->key()){
         key = static_cast<Qt::Key>(event->key());
         ui->buttonGetHotKey->setText(QKeySequence(key).toString(QKeySequence::NativeText));
         getingKey = false;

@@ -922,7 +922,8 @@ release/filtrwidget.o: filtrwidget.cpp filtrwidget.h \
 		../../MSYS2/mingw64/qt5-static/include/QtWidgets/QPushButton \
 		../../MSYS2/mingw64/qt5-static/include/QtWidgets/qpushbutton.h \
 		../../MSYS2/mingw64/qt5-static/include/QtWidgets/qabstractbutton.h \
-		../../MSYS2/mingw64/qt5-static/include/QtGui/qicon.h
+		../../MSYS2/mingw64/qt5-static/include/QtGui/qicon.h \
+		../../MSYS2/mingw64/qt5-static/include/QtWidgets/QVBoxLayout
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\filtrwidget.o filtrwidget.cpp
 
 release/findwidget.o: findwidget.cpp findwidget.h \
@@ -1046,6 +1047,7 @@ release/findwidget.o: findwidget.cpp findwidget.h \
 		../../MSYS2/mingw64/qt5-static/include/QtWidgets/qlayout.h \
 		../../MSYS2/mingw64/qt5-static/include/QtWidgets/qlayoutitem.h \
 		../../MSYS2/mingw64/qt5-static/include/QtWidgets/qboxlayout.h \
+		../../MSYS2/mingw64/qt5-static/include/QtWidgets/QHBoxLayout \
 		../../MSYS2/mingw64/qt5-static/include/QtWidgets/QLabel \
 		../../MSYS2/mingw64/qt5-static/include/QtWidgets/qlabel.h \
 		../../MSYS2/mingw64/qt5-static/include/QtWidgets/qframe.h \
@@ -1058,7 +1060,8 @@ release/findwidget.o: findwidget.cpp findwidget.h \
 		../../MSYS2/mingw64/qt5-static/include/QtWidgets/QPushButton \
 		../../MSYS2/mingw64/qt5-static/include/QtWidgets/qpushbutton.h \
 		../../MSYS2/mingw64/qt5-static/include/QtWidgets/qabstractbutton.h \
-		../../MSYS2/mingw64/qt5-static/include/QtGui/qicon.h
+		../../MSYS2/mingw64/qt5-static/include/QtGui/qicon.h \
+		../../MSYS2/mingw64/qt5-static/include/QtWidgets/QVBoxLayout
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\findwidget.o findwidget.cpp
 
 release/globalkey.o: globalkey.cpp globalkey.h \
@@ -1241,7 +1244,8 @@ release/hotkeywidget.o: hotkeywidget.cpp hotkeywidget.h \
 		../../MSYS2/mingw64/qt5-static/include/QtWidgets/qlayoutitem.h \
 		../../MSYS2/mingw64/qt5-static/include/QtWidgets/qgridlayout.h \
 		../../MSYS2/mingw64/qt5-static/include/QtWidgets/QPushButton \
-		../../MSYS2/mingw64/qt5-static/include/QtWidgets/qpushbutton.h
+		../../MSYS2/mingw64/qt5-static/include/QtWidgets/qpushbutton.h \
+		../../MSYS2/mingw64/qt5-static/include/QtWidgets/QVBoxLayout
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\hotkeywidget.o hotkeywidget.cpp
 
 release/main.o: main.cpp mainwindow.h \
@@ -1571,13 +1575,7 @@ release/mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../MSYS2/mingw64/qt5-static/include/QtWidgets/qpushbutton.h \
 		../../MSYS2/mingw64/qt5-static/include/QtWidgets/QStatusBar \
 		../../MSYS2/mingw64/qt5-static/include/QtWidgets/qstatusbar.h \
-		../../MSYS2/mingw64/qt5-static/include/QtWidgets/QTextEdit \
-		../../MSYS2/mingw64/qt5-static/include/QtWidgets/qtextedit.h \
-		../../MSYS2/mingw64/qt5-static/include/QtGui/qtextdocument.h \
-		../../MSYS2/mingw64/qt5-static/include/QtGui/qtextoption.h \
-		../../MSYS2/mingw64/qt5-static/include/QtGui/qtextcursor.h \
-		../../MSYS2/mingw64/qt5-static/include/QtGui/qtextformat.h \
-		../../MSYS2/mingw64/qt5-static/include/QtGui/qpen.h
+		../../MSYS2/mingw64/qt5-static/include/QtWidgets/QVBoxLayout
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mainwindow.o mainwindow.cpp
 
 release/memoryreader.o: memoryreader.cpp memoryreader.h \

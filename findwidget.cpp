@@ -6,6 +6,7 @@ FindWidget::FindWidget(QWidget *parent)
     , ui(new Ui::FindWidget)
 {
     ui->setupUi(this);
+    this->setFixedSize(570, 330);
 
     ui->lineStartAddress->setText(QString::number(0x000000000000, 16).toUpper());
     ui->lineEndAddress->setText(QString::number(0x7fffffffffff, 16).toUpper());
@@ -74,6 +75,10 @@ void FindWidget::SlotStart()
         endAddressUser = ui->lineEndAddress->text().toULongLong(&ok_end, 16);
         if(!ok_end){
             throw std::runtime_error("Неверный формат конечного адреса");
+        }
+
+        if(startAddressUser > endAddressUser){
+            throw std::runtime_error("Начальный адрес должен быть не больше конечного");
         }
 
         startAddress = startAddress >= startAddressUser ? startAddress : startAddressUser;

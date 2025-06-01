@@ -103,8 +103,8 @@ public:
     {
         FindWidget->setWindowTitle(QCoreApplication::translate("FindWidget", "Form", nullptr));
         labelTextValue->setText(QCoreApplication::translate("FindWidget", "\320\230\321\201\320\272\320\276\320\274\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265: ", nullptr));
-        labelTextStart->setText(QCoreApplication::translate("FindWidget", "\320\235\320\260\321\207\320\260\320\273\321\214\320\275\321\213\320\271 \320\260\320\264\321\200\320\265\321\201\321\201: ", nullptr));
-        labelTextEnd->setText(QCoreApplication::translate("FindWidget", "\320\232\320\276\320\275\320\265\321\207\320\275\321\213\320\271 \320\260\320\264\321\200\320\265\321\201\321\201: ", nullptr));
+        labelTextStart->setText(QCoreApplication::translate("FindWidget", "\320\235\320\260\321\207\320\260\320\273\321\214\320\275\321\213\320\271 \320\260\320\264\321\200\320\265\321\201: ", nullptr));
+        labelTextEnd->setText(QCoreApplication::translate("FindWidget", "\320\232\320\276\320\275\320\265\321\207\320\275\321\213\320\271 \320\260\320\264\321\200\320\265\321\201: ", nullptr));
         buttonStart->setText(QCoreApplication::translate("FindWidget", "\320\235\320\260\321\207\320\260\321\202\321\214 \320\237\320\276\320\270\321\201\320\272", nullptr));
         buttonExit->setText(QCoreApplication::translate("FindWidget", "\320\222\321\213\320\271\321\202\320\270", nullptr));
     } // retranslateUi

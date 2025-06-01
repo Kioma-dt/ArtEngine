@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->setFixedSize(1280, 680);
+    this->setFixedSize(1400, 680);
     this->setWindowTitle("ArtEngine");
     this->setWindowIcon(QIcon("images/icon.ico"));
 
@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->buttonFix->setIcon(QIcon("images/arrow.png"));
     ui->buttonUnFix->setIcon(QIcon("images/crossed.png"));
 
-    labelFont.setPointSize(14);
+    labelFont.setPointSize(12);
     buttonFont.setPointSize(10);
     buttonFont.setBold(true);
     tableFont.setPointSize(12);
@@ -51,7 +51,6 @@ MainWindow::MainWindow(QWidget *parent)
         color: rgb(180, 180, 180);
     }
     )";
-
     ui->buttonSearch->setStyleSheet(buttonStyle);
     ui->buttonFiltr->setStyleSheet(buttonStyle);
     ui->buttonChange->setStyleSheet(buttonStyle);
@@ -60,33 +59,24 @@ MainWindow::MainWindow(QWidget *parent)
     ui->buttonFix->setStyleSheet(buttonStyle);
     ui->buttonUnFix->setStyleSheet(buttonStyle);
 
-    ui->tableFounded->setStyleSheet(R"(
+    QString tableStyle = R"(
     QHeaderView::section {
-        background-color: rgb(100, 150, 200);
-        color: rgb(255, 255, 255);
+        background-color: rgb(0, 72, 128);
+        color: rgb(252, 209, 22);
         padding: 4px;
-        border: 1px solid rgb(80, 80, 80);
+        border: 1px solid rgb(30, 30, 30);
         font-size: 20px;
         font-weight: bold;
     }
-    )");
-
-    ui->tableFixed->setStyleSheet(R"(
-    QHeaderView::section {
-        background-color: rgb(100, 150, 200);
-        color: rgb(255, 255, 255);
-        padding: 4px;
-        border: 1px solid rgb(80, 80, 80);
-        font-size: 20px;
-        font-weight: bold;
-    }
-    )");
+    )";
+    ui->tableFounded->setStyleSheet(tableStyle);
+    ui->tableFixed->setStyleSheet(tableStyle);
     ui->tableFixed->setFont(tableFont);
     ui->tableFounded->setFont(tableFont);
 
-    ui->comboBoxProcessID->setStyleSheet(R"(
+    QString comboBoxStyle = (R"(
     QComboBox {
-        background-color: rgb(60, 90, 120);
+        background-color: rgb(0, 72, 128);
         color: rgb(252, 209, 22);
         border: 1px solid rgb(50, 70, 100);
         padding: 4px;
@@ -103,6 +93,7 @@ MainWindow::MainWindow(QWidget *parent)
         font-size: 20px;
     }
     )");
+    ui->comboBoxProcessID->setStyleSheet(comboBoxStyle);
 
 
     memoryReader = new MemoryReader();
@@ -127,6 +118,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->labelHotKey->setText(this->GetHotKeyString(currentHotKey));
 
     hotkeywidget = new HotKeyWidget(currentHotKey.ctrl, currentHotKey.alt, currentHotKey.shift, currentHotKey.key);
+    hotkeywidget->setWindowTitle("Горячая Клавиша");
 
     ui->tableFounded->setColumnCount(3);
     ui->tableFounded->setHorizontalHeaderLabels(QStringList() << "" << "Адрес" << "Значение");
@@ -169,13 +161,22 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::PrintArrayToTable(const std::vector<std::pair<uintptr_t, int> > &array, QTableWidget* table, int addressColumn, int valueColumn)
+void MainWindow::PrintArrayToTable(const std::vector<std::pair<uintptr_t, int> > &array, QTableWidget* table, int addressColumn, int valueColumn, bool add)
 {
-    table->setRowCount(array.size());
-
-
     QTableWidgetItem* item;
-    int row = 0;
+    int row;
+
+    if(!add){
+        table->clearContents();
+        table->setRowCount(array.size());
+        row = 0;
+    }
+    else{
+        row = table->rowCount();
+        table->setRowCount(row + array.size());
+    }
+
+
     for(auto [address, value] : array){
         QRadioButton* temp_button = new QRadioButton();
         QWidget* cell_widget = new QWidget();
@@ -203,22 +204,26 @@ void MainWindow::PrintArrayToTable(const std::vector<std::pair<uintptr_t, int> >
     }
 }
 
-void MainWindow::GetArrayFromTable(std::vector<std::pair<uintptr_t, int> > &array, QTableWidget *table, int addressColumn, int valueColumn)
+void MainWindow::GetArrayFromTable(std::vector<std::pair<uintptr_t, int> > &array, QTableWidget *table, int addressColumn, int valueColumn, bool all)
 {
     QTableWidgetItem* item;
     uintptr_t address;
     int value;
-    bool ok;
+    bool ok_addr = true;
+    bool ok_value = true;
 
 
     for(int i = 0; i < table->rowCount(); i++){
         QWidget* cell_widget = table->cellWidget(i, 0);
         QRadioButton* radioButton = cell_widget->findChild<QRadioButton*>();
-        if(radioButton->isChecked()){
+        if(radioButton->isChecked() || all){
             item = table->item(i, addressColumn);
-            address = item->text().toULongLong(&ok, 16);
+            address = item->text().toULongLong(&ok_addr, 16);
             item = table->item(i, valueColumn);
-            value = item->text().toInt();
+            value = item->text().toInt(&ok_value);
+            if(!ok_value && !all){
+                throw std::runtime_error(QString("Неверное значение в ячейке с номером %0").arg(i + 1).toStdString());
+            }
             array.push_back(std::make_pair(address, value));
         }
     }
@@ -245,7 +250,7 @@ DWORD MainWindow::GetProcessID()
 {
     size_t index = ui->comboBoxProcessID->currentIndex();
     if(processes.size() <= index){
-        throw std::runtime_error("Неверное ID процесса");
+        throw std::runtime_error("Неверное ID процесса (Поробуйте Обновить Процессы)");
     }
     return processes.at(index).second;
 }
@@ -263,31 +268,24 @@ void MainWindow::SlotFiltr()
 
 void MainWindow::SlotFix()
 {
+    addressFixed.clear();
     this->GetArrayFromTable(addressFixed, ui->tableFounded, 1, 2);
-    this->PrintArrayToTable(addressFixed, ui->tableFixed, 2, 3);
+    this->PrintArrayToTable(addressFixed, ui->tableFixed, 2, 3, true);
 }
 
 void MainWindow::SlotUnFix()
 {
-    addressFixed.clear();
-    QTableWidgetItem* item;
-    uintptr_t address;
-    int value;
-    bool ok;
-
-    for(int i = 0; i < ui->tableFixed->rowCount(); i++){
+    int i = 0;
+    while(i < ui->tableFixed->rowCount()){
         QWidget* cell_widget = ui->tableFixed->cellWidget(i, 0);
         QRadioButton* radioButton = cell_widget->findChild<QRadioButton*>();
-        if(!radioButton->isChecked()){
-            item = ui->tableFixed->item(i, 2);
-            address = item->text().toULongLong(&ok, 16);
-            item = ui->tableFixed->item(i, 3);
-            value = item->text().toInt();
-            addressFixed.push_back(std::make_pair(address, value));
+        if(radioButton->isChecked()){
+            ui->tableFixed->removeRow(i);
+        }
+        else{
+            i++;
         }
     }
-
-    this->PrintArrayToTable(addressFixed, ui->tableFixed, 2, 3);
 }
 
 void MainWindow::SlotChange()
@@ -298,7 +296,7 @@ void MainWindow::SlotChange()
 
         HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processID);
         if(hProcess == NULL){
-            throw std::runtime_error("Не удалось открыть процесс");
+            throw std::runtime_error("Не удалось открыть процесс (Попробуйте запустить приложение от имени администратора)");
         }
 
         std::vector<std::pair<uintptr_t, int>>temp_vector;
@@ -338,7 +336,7 @@ void MainWindow::SlotFindValue(int targetValue, uintptr_t startAddress, uintptr_
 
         HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processID);
         if(hProcess == NULL){
-            throw std::runtime_error("Не удалось открыть процесс");
+            throw std::runtime_error("Не удалось открыть процесс (Попробуйте запустить приложение от имени администратора)");
         }
 
         addressFounded = memoryReader->Find(hProcess, targetValue, startAddress, endAddress);
@@ -358,7 +356,7 @@ void MainWindow::SlotFiltrArray(int targetValue)
 
         HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processID);
         if(hProcess == NULL){
-            throw std::runtime_error("Не удалось открыть процесс");
+            throw std::runtime_error("Не удалось открыть процесс (Попробуйте запустить приложение от имени администратора)");
         }
 
         addressFounded = memoryReader->Filter(hProcess, addressFounded, targetValue);

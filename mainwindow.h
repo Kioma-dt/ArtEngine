@@ -50,8 +50,8 @@ private:
     QFont buttonFont;
     QFont tableFont;
 
-    void PrintArrayToTable(const std::vector<std::pair<uintptr_t, int>>& array, QTableWidget *table, int addressColumn, int valueColumn);
-    void GetArrayFromTable(std::vector<std::pair<uintptr_t, int>>& array, QTableWidget *table, int addressColumn, int valueColumn);
+    void PrintArrayToTable(const std::vector<std::pair<uintptr_t, int>>& array, QTableWidget *table, int addressColumn, int valueColumn, bool add = false);
+    void GetArrayFromTable(std::vector<std::pair<uintptr_t, int>>& array, QTableWidget *table, int addressColumn, int valueColumn, bool all = false);
 
     QString GetHotKeyString(HotKey hotKey);
 

@@ -30,18 +30,18 @@ class Ui_MainWindow
 public:
     QWidget *centralwidget;
     QLabel *labelIcon;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QHBoxLayout *horizontalLayout_4;
     QTableWidget *tableFounded;
     QVBoxLayout *verticalLayout;
     QPushButton *buttonFix;
     QPushButton *buttonUnFix;
     QTableWidget *tableFixed;
-    QWidget *widget1;
+    QWidget *layoutWidget1;
     QHBoxLayout *horizontalLayout_5;
     QComboBox *comboBoxProcessID;
     QPushButton *buttonUpdateProcesses;
-    QWidget *widget2;
+    QWidget *layoutWidget2;
     QHBoxLayout *horizontalLayout_3;
     QHBoxLayout *horizontalLayout;
     QLabel *labelTextHotKey;
@@ -58,7 +58,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(1280, 680);
+        MainWindow->resize(1400, 680);
         MainWindow->setAutoFillBackground(false);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
@@ -67,25 +67,25 @@ public:
         labelIcon->setGeometry(QRect(40, 30, 141, 111));
         labelIcon->setPixmap(QPixmap(QString::fromUtf8("images/icon.ico")));
         labelIcon->setScaledContents(true);
-        widget = new QWidget(centralwidget);
-        widget->setObjectName(QString::fromUtf8("widget"));
-        widget->setGeometry(QRect(40, 150, 1211, 371));
-        horizontalLayout_4 = new QHBoxLayout(widget);
+        layoutWidget = new QWidget(centralwidget);
+        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
+        layoutWidget->setGeometry(QRect(40, 150, 1331, 371));
+        horizontalLayout_4 = new QHBoxLayout(layoutWidget);
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
         horizontalLayout_4->setContentsMargins(0, 0, 0, 0);
-        tableFounded = new QTableWidget(widget);
+        tableFounded = new QTableWidget(layoutWidget);
         tableFounded->setObjectName(QString::fromUtf8("tableFounded"));
 
         horizontalLayout_4->addWidget(tableFounded);
 
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        buttonFix = new QPushButton(widget);
+        buttonFix = new QPushButton(layoutWidget);
         buttonFix->setObjectName(QString::fromUtf8("buttonFix"));
 
         verticalLayout->addWidget(buttonFix);
 
-        buttonUnFix = new QPushButton(widget);
+        buttonUnFix = new QPushButton(layoutWidget);
         buttonUnFix->setObjectName(QString::fromUtf8("buttonUnFix"));
 
         verticalLayout->addWidget(buttonUnFix);
@@ -93,42 +93,42 @@ public:
 
         horizontalLayout_4->addLayout(verticalLayout);
 
-        tableFixed = new QTableWidget(widget);
+        tableFixed = new QTableWidget(layoutWidget);
         tableFixed->setObjectName(QString::fromUtf8("tableFixed"));
 
         horizontalLayout_4->addWidget(tableFixed);
 
-        widget1 = new QWidget(centralwidget);
-        widget1->setObjectName(QString::fromUtf8("widget1"));
-        widget1->setGeometry(QRect(190, 30, 1061, 111));
-        horizontalLayout_5 = new QHBoxLayout(widget1);
+        layoutWidget1 = new QWidget(centralwidget);
+        layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
+        layoutWidget1->setGeometry(QRect(190, 30, 1181, 111));
+        horizontalLayout_5 = new QHBoxLayout(layoutWidget1);
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
         horizontalLayout_5->setContentsMargins(0, 0, 0, 0);
-        comboBoxProcessID = new QComboBox(widget1);
+        comboBoxProcessID = new QComboBox(layoutWidget1);
         comboBoxProcessID->setObjectName(QString::fromUtf8("comboBoxProcessID"));
 
         horizontalLayout_5->addWidget(comboBoxProcessID);
 
-        buttonUpdateProcesses = new QPushButton(widget1);
+        buttonUpdateProcesses = new QPushButton(layoutWidget1);
         buttonUpdateProcesses->setObjectName(QString::fromUtf8("buttonUpdateProcesses"));
 
         horizontalLayout_5->addWidget(buttonUpdateProcesses);
 
         horizontalLayout_5->setStretch(0, 10);
-        widget2 = new QWidget(centralwidget);
-        widget2->setObjectName(QString::fromUtf8("widget2"));
-        widget2->setGeometry(QRect(41, 541, 1211, 71));
-        horizontalLayout_3 = new QHBoxLayout(widget2);
+        layoutWidget2 = new QWidget(centralwidget);
+        layoutWidget2->setObjectName(QString::fromUtf8("layoutWidget2"));
+        layoutWidget2->setGeometry(QRect(43, 543, 1341, 71));
+        horizontalLayout_3 = new QHBoxLayout(layoutWidget2);
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
         horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        labelTextHotKey = new QLabel(widget2);
+        labelTextHotKey = new QLabel(layoutWidget2);
         labelTextHotKey->setObjectName(QString::fromUtf8("labelTextHotKey"));
 
         horizontalLayout->addWidget(labelTextHotKey);
 
-        labelHotKey = new QLabel(widget2);
+        labelHotKey = new QLabel(layoutWidget2);
         labelHotKey->setObjectName(QString::fromUtf8("labelHotKey"));
 
         horizontalLayout->addWidget(labelHotKey);
@@ -138,12 +138,12 @@ public:
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        buttonChangeHotKey = new QPushButton(widget2);
+        buttonChangeHotKey = new QPushButton(layoutWidget2);
         buttonChangeHotKey->setObjectName(QString::fromUtf8("buttonChangeHotKey"));
 
         horizontalLayout_2->addWidget(buttonChangeHotKey);
 
-        buttonSearch = new QPushButton(widget2);
+        buttonSearch = new QPushButton(layoutWidget2);
         buttonSearch->setObjectName(QString::fromUtf8("buttonSearch"));
         QPalette palette;
         QBrush brush(QColor(255, 255, 255, 255));
@@ -155,12 +155,12 @@ public:
 
         horizontalLayout_2->addWidget(buttonSearch);
 
-        buttonFiltr = new QPushButton(widget2);
+        buttonFiltr = new QPushButton(layoutWidget2);
         buttonFiltr->setObjectName(QString::fromUtf8("buttonFiltr"));
 
         horizontalLayout_2->addWidget(buttonFiltr);
 
-        buttonChange = new QPushButton(widget2);
+        buttonChange = new QPushButton(layoutWidget2);
         buttonChange->setObjectName(QString::fromUtf8("buttonChange"));
 
         horizontalLayout_2->addWidget(buttonChange);
@@ -171,7 +171,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1280, 25));
+        menubar->setGeometry(QRect(0, 0, 1400, 25));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));

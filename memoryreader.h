@@ -17,9 +17,8 @@ class MemoryReader : public QObject
 
 private:
     static std::vector<std::pair<uintptr_t, size_t>> GetRegionInformation(HANDLE hProcess);
-
 public:
-    explicit MemoryReader(QObject* parent = nullptr) : QObject(parent) {}
+    explicit MemoryReader(QObject* parent = nullptr);
 
 public slots:
     std::vector<std::pair<QString, DWORD>> GetAllProcesses();

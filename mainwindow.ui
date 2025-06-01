@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
+    <width>1400</width>
     <height>680</height>
    </rect>
   </property>
@@ -36,12 +36,12 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>40</x>
       <y>150</y>
-      <width>1211</width>
+      <width>1331</width>
       <height>371</height>
      </rect>
     </property>
@@ -72,12 +72,12 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>190</x>
       <y>30</y>
-      <width>1061</width>
+      <width>1181</width>
       <height>111</height>
      </rect>
     </property>
@@ -94,12 +94,12 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>41</x>
-      <y>541</y>
-      <width>1211</width>
+      <x>43</x>
+      <y>543</y>
+      <width>1341</width>
       <height>71</height>
      </rect>
     </property>
@@ -199,7 +199,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1280</width>
+     <width>1400</width>
      <height>25</height>
     </rect>
    </property>

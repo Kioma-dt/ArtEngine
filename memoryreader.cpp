@@ -1,5 +1,8 @@
 #include "memoryreader.h"
 
+MemoryReader::MemoryReader(QObject *parent) : QObject(parent) {
+}
+
 std::vector<std::pair<uintptr_t, size_t> > MemoryReader::GetRegionInformation(HANDLE hProcess)
 {
     std::vector <std::pair<uintptr_t, size_t>> base_size;
@@ -34,7 +37,7 @@ std::vector<std::pair<QString, DWORD> > MemoryReader::GetAllProcesses()
             QString name = QString::fromWCharArray(pe.szExeFile);
             DWORD ID = pe.th32ProcessID;
             if(!processNames.contains(name)){
-                processes.push_back(std::make_pair(name, ID));
+                processes.insert(processes.begin(), std::make_pair(name, ID));
                 processNames.insert(name);
             }
 
@@ -59,6 +62,7 @@ std::vector<std::pair<uintptr_t, int>> MemoryReader::Find(HANDLE hProcess, int t
     SIZE_T bytesRead;
     std::vector <std::pair<uintptr_t, size_t>> regionArray = GetRegionInformation(hProcess);
     std::vector<std::pair<uintptr_t, int>> addressFounded;
+
 
     for (auto region : regionArray) {
         if (region.first < minAddress) {

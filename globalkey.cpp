@@ -85,6 +85,8 @@ int GlobalKey::qtKeyToVk(Qt::Key key)
         case Qt::Key_Shift: return VK_SHIFT;
         case Qt::Key_Alt: return VK_MENU;
         case Qt::Key_Meta: return VK_LWIN;
+        case Qt::Key_Backspace: return VK_BACK;
+        case Qt::Key_Return:    return VK_RETURN;
         case Qt::Key_F1: return VK_F1;
         case Qt::Key_F2: return VK_F2;
         case Qt::Key_F3: return VK_F3;
@@ -97,6 +99,8 @@ int GlobalKey::qtKeyToVk(Qt::Key key)
         case Qt::Key_F10: return VK_F10;
         case Qt::Key_F11: return VK_F11;
         case Qt::Key_F12: return VK_F12;
+        case Qt::Key_Period:
+        case Qt::Key_Greater: return VK_OEM_PERIOD;
         default:
             if (key >= Qt::Key_0 && key <= Qt::Key_9)
                 return key;
