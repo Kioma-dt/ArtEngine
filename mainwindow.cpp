@@ -96,7 +96,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->comboBoxProcessID->setStyleSheet(comboBoxStyle);
 
 
-    memoryReader = new MemoryReader();
+    memoryScanner = new MemoryScanner();
 
     globalKeyProcessor = new GlobalKey(this);
     globalKeyProcessor->installHook();
@@ -168,7 +168,7 @@ void MainWindow::PrintArrayToTable(const std::vector<std::pair<uintptr_t, int> >
 
     if(!add){
         table->clearContents();
-        table->setRowCount(array.size());
+        table->setRowCount(array.size() < 1000 ? array.size() : 1000);
         row = 0;
     }
     else{
@@ -200,7 +200,9 @@ void MainWindow::PrintArrayToTable(const std::vector<std::pair<uintptr_t, int> >
             item->setFlags(item->flags() & ~Qt::ItemIsEditable);
         }
 
-        row++;
+        if(++row > 1000){
+            break;
+        }
     }
 }
 
@@ -301,7 +303,7 @@ void MainWindow::SlotChange()
 
         std::vector<std::pair<uintptr_t, int>>temp_vector;
         this->GetArrayFromTable(temp_vector, ui->tableFixed, 2, 3);
-        memoryReader->Write(hProcess, temp_vector);
+        memoryScanner->Write(hProcess, temp_vector);
 
         CloseHandle(hProcess);
     }
@@ -312,7 +314,7 @@ void MainWindow::SlotChange()
 
 void MainWindow::SlotUpdateProcesses()
 {
-    processes = memoryReader->GetAllProcesses();
+    processes = memoryScanner->GetAllProcesses();
     ui->comboBoxProcessID->clear();
 
     for(auto process : processes){
@@ -339,7 +341,7 @@ void MainWindow::SlotFindValue(int targetValue, uintptr_t startAddress, uintptr_
             throw std::runtime_error("Не удалось открыть процесс (Попробуйте запустить приложение от имени администратора)");
         }
 
-        addressFounded = memoryReader->Find(hProcess, targetValue, startAddress, endAddress);
+        addressFounded = memoryScanner->Find(hProcess, targetValue, startAddress, endAddress);
         this->PrintArrayToTable(addressFounded, ui->tableFounded, 1, 2);
         CloseHandle(hProcess);
     }
@@ -359,7 +361,7 @@ void MainWindow::SlotFiltrArray(int targetValue)
             throw std::runtime_error("Не удалось открыть процесс (Попробуйте запустить приложение от имени администратора)");
         }
 
-        addressFounded = memoryReader->Filter(hProcess, addressFounded, targetValue);
+        addressFounded = memoryScanner->Filter(hProcess, addressFounded, targetValue);
         PrintArrayToTable(addressFounded, ui->tableFounded, 1, 2);
 
         CloseHandle(hProcess);

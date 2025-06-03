@@ -70,6 +70,6 @@ void FiltrWidget::SlotStart()
 
 void FiltrWidget::SlotExit()
 {
-    ui->lineValue->clear();
+    // ui->lineValue->clear();
     this->close();
 }

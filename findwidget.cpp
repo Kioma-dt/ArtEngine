@@ -81,8 +81,8 @@ void FindWidget::SlotStart()
             throw std::runtime_error("Начальный адрес должен быть не больше конечного");
         }
 
-        startAddress = startAddress >= startAddressUser ? startAddress : startAddressUser;
-        endAddress = endAddress <= endAddressUser ? endAddress : endAddressUser;
+        startAddress = std::max(startAddress, startAddressUser);
+        endAddress = std::min(endAddress, endAddressUser);
 
         this->SlotExit();
         emit SignalFind(targetValue, startAddress, endAddress);
@@ -94,8 +94,8 @@ void FindWidget::SlotStart()
 
 void FindWidget::SlotExit()
 {
-    ui->lineStartAddress->setText(QString::number(0x000000000000, 16).toUpper());
-    ui->lineEndAddress->setText(QString::number(0x7fffffffffff, 16).toUpper());
-    ui->lineValue->clear();
+    // ui->lineStartAddress->setText(QString::number(0x000000000000, 16).toUpper());
+    // ui->lineEndAddress->setText(QString::number(0x7fffffffffff, 16).toUpper());
+    // ui->lineValue->clear();
     this->close();
 }

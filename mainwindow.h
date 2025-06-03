@@ -12,7 +12,7 @@
 #include <psapi.h>
 #include <QRadioButton>
 #include "findwidget.h"
-#include "memoryreader.h"
+#include "memoryscanner.h"
 #include "filtrwidget.h"
 #include "globalkey.h"
 #include "hotkeywidget.h"
@@ -37,7 +37,7 @@ private:
     std::vector<std::pair<uintptr_t, int>> addressFixed;
     std::vector<std::pair<QString, DWORD>> processes;
 
-    MemoryReader* memoryReader;
+    MemoryScanner* memoryScanner;
     GlobalKey* globalKeyProcessor;
 
     HotKey currentHotKey;

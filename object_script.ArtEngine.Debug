@@ -4,7 +4,7 @@ debug/globalkey.o
 debug/hotkeywidget.o
 debug/main.o
 debug/mainwindow.o
-debug/memoryreader.o
+debug/memoryscanner.o
 debug/artengine_plugin_import.o
 debug/qrc_resources.o
 debug/moc_filtrwidget.o
@@ -12,4 +12,3 @@ debug/moc_findwidget.o
 debug/moc_globalkey.o
 debug/moc_hotkeywidget.o
 debug/moc_mainwindow.o
-debug/moc_memoryreader.o

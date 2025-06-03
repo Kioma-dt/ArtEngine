@@ -16,7 +16,7 @@ SOURCES += \
     hotkeywidget.cpp \
     main.cpp \
     mainwindow.cpp \
-    memoryreader.cpp
+    memoryscanner.cpp
 
 HEADERS += \
     filtrwidget.h \
@@ -24,7 +24,7 @@ HEADERS += \
     globalkey.h \
     hotkeywidget.h \
     mainwindow.h \
-    memoryreader.h
+    memoryscanner.h
 
 FORMS += \
     filtrwidget.ui \
