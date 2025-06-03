@@ -104,6 +104,13 @@ void HotKeyWidget::SlotChange()
     ctrl = ui->checkCtrl->isChecked();
     alt = ui->checkAlt->isChecked();
     shift = ui->checkShift->isChecked();
+
+    if (key == Qt::Key(0)) {
+        QMessageBox::warning(this, "Нельзя поменять горячую клавишу", "Необходимо выбрать клавишу.");
+        return;
+    }
+
+
     emit SignalChangeHotKey(ctrl, alt, shift, key);
 }
 

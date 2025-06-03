@@ -37,6 +37,8 @@ private:
     std::vector<std::pair<uintptr_t, int>> addressFixed;
     std::vector<std::pair<QString, DWORD>> processes;
 
+    const int kMaxRowsInTable = 1000;
+
     MemoryScanner* memoryScanner;
     GlobalKey* globalKeyProcessor;
 

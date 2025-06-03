@@ -124,13 +124,44 @@ int GlobalKey::qtKeyToVk(Qt::Key key)
         case Qt::Key_Equal: return VK_OEM_PLUS;
         case Qt::Key_QuoteLeft: return VK_OEM_3;
         case Qt::Key_NumLock: return VK_NUMLOCK;
-        case Qt::Key_Asterisk: return VK_MULTIPLY;
-        case Qt::Key_Plus: return VK_ADD;
         case Qt::Key_Enter: return VK_RETURN;
         case Qt::Key_Print: return VK_SNAPSHOT;
         case Qt::Key_ScrollLock: return VK_SCROLL;
         case Qt::Key_Pause: return VK_PAUSE;
         case Qt::Key_CapsLock: return VK_CAPITAL;
+        case Qt::Key_VolumeDown: return VK_VOLUME_DOWN;
+        case Qt::Key_VolumeUp: return VK_VOLUME_UP;
+        case Qt::Key_VolumeMute: return VK_VOLUME_MUTE;
+        case Qt::Key_MediaPlay: return VK_MEDIA_PLAY_PAUSE;
+        case Qt::Key_MediaStop: return VK_MEDIA_STOP;
+        case Qt::Key_MediaNext: return VK_MEDIA_NEXT_TRACK;
+        case Qt::Key_MediaPrevious: return VK_MEDIA_PREV_TRACK;
+        case Qt::Key_LaunchMail: return VK_LAUNCH_MAIL;
+        case Qt::Key_LaunchMedia: return VK_LAUNCH_MEDIA_SELECT;
+        case Qt::Key_Launch0: return VK_LAUNCH_APP1;
+        case Qt::Key_Launch1: return VK_LAUNCH_APP2;
+        case Qt::Key_Exclam: return '1';
+        case Qt::Key_At: return '2';
+        case Qt::Key_NumberSign: return '3';
+        case Qt::Key_Dollar: return '4';
+        case Qt::Key_Percent: return '5';
+        case Qt::Key_AsciiCircum: return '6';
+        case Qt::Key_Ampersand: return '7';
+        case Qt::Key_Asterisk: return '8';
+        case Qt::Key_ParenLeft: return '9';
+        case Qt::Key_ParenRight: return '0';
+        case Qt::Key_Underscore: return VK_OEM_MINUS;
+        case Qt::Key_Plus: return VK_OEM_PLUS;
+        case Qt::Key_BraceLeft: return VK_OEM_4;
+        case Qt::Key_BraceRight: return VK_OEM_6;
+        case Qt::Key_Bar: return VK_OEM_5;
+        case Qt::Key_Colon: return VK_OEM_1;
+        case Qt::Key_QuoteDbl: return VK_OEM_7;
+        case Qt::Key_Less: return VK_OEM_COMMA;
+        case Qt::Key_Greater: return VK_OEM_PERIOD;
+        case Qt::Key_Question: return VK_OEM_2;
+        case Qt::Key_AsciiTilde: return VK_OEM_3;
+
 
         default:
             if (key >= Qt::Key_0 && key <= Qt::Key_9)

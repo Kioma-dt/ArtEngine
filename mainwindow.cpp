@@ -168,7 +168,7 @@ void MainWindow::PrintArrayToTable(const std::vector<std::pair<uintptr_t, int> >
 
     if(!add){
         table->clearContents();
-        table->setRowCount(array.size() < 1000 ? array.size() : 1000);
+        table->setRowCount(array.size() < kMaxRowsInTable ? array.size() : kMaxRowsInTable);
         row = 0;
     }
     else{
@@ -200,9 +200,10 @@ void MainWindow::PrintArrayToTable(const std::vector<std::pair<uintptr_t, int> >
             item->setFlags(item->flags() & ~Qt::ItemIsEditable);
         }
 
-        if(++row > 1000){
+        if(++row > kMaxRowsInTable){
             break;
         }
+        // ++row;
     }
 }
 
@@ -250,8 +251,8 @@ QString MainWindow::GetHotKeyString(HotKey hotKey)
 
 DWORD MainWindow::GetProcessID()
 {
-    size_t index = ui->comboBoxProcessID->currentIndex();
-    if(processes.size() <= index){
+    int index = ui->comboBoxProcessID->currentIndex();
+    if(index < 0 || processes.size() <= index){
         throw std::runtime_error("Неверное ID процесса (Поробуйте Обновить Процессы)");
     }
     return processes.at(index).second;
