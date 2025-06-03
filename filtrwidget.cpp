@@ -6,6 +6,7 @@ FiltrWidget::FiltrWidget(QWidget *parent)
     , ui(new Ui::FiltrWidget)
 {
     ui->setupUi(this);
+    this->setFixedSize(470, 320);
 
     QString buttonStyle = R"(
     QPushButton {
@@ -69,6 +70,6 @@ void FiltrWidget::SlotStart()
 
 void FiltrWidget::SlotExit()
 {
-    ui->lineValue->clear();
+    // ui->lineValue->clear();
     this->close();
 }

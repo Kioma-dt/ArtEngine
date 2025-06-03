@@ -29,7 +29,7 @@
      <item row="1" column="0" colspan="2">
       <widget class="QLabel" name="labelTextStart">
        <property name="text">
-        <string>Начальный адресс: </string>
+        <string>Начальный адрес: </string>
        </property>
       </widget>
      </item>
@@ -39,7 +39,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="labelTextEnd">
        <property name="text">
-        <string>Конечный адресс: </string>
+        <string>Конечный адрес: </string>
        </property>
       </widget>
      </item>

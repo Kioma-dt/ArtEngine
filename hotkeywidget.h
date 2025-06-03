@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QKeyEvent>
+#include <QMessageBox>
 
 namespace Ui {
 class HotKeyWidget;

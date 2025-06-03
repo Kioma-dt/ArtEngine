@@ -12,7 +12,7 @@
 #include <psapi.h>
 #include <QRadioButton>
 #include "findwidget.h"
-#include "memoryreader.h"
+#include "memoryscanner.h"
 #include "filtrwidget.h"
 #include "globalkey.h"
 #include "hotkeywidget.h"
@@ -37,7 +37,9 @@ private:
     std::vector<std::pair<uintptr_t, int>> addressFixed;
     std::vector<std::pair<QString, DWORD>> processes;
 
-    MemoryReader* memoryReader;
+    const int kMaxRowsInTable = 1000;
+
+    MemoryScanner* memoryScanner;
     GlobalKey* globalKeyProcessor;
 
     HotKey currentHotKey;
@@ -50,8 +52,8 @@ private:
     QFont buttonFont;
     QFont tableFont;
 
-    void PrintArrayToTable(const std::vector<std::pair<uintptr_t, int>>& array, QTableWidget *table, int addressColumn, int valueColumn);
-    void GetArrayFromTable(std::vector<std::pair<uintptr_t, int>>& array, QTableWidget *table, int addressColumn, int valueColumn);
+    void PrintArrayToTable(const std::vector<std::pair<uintptr_t, int>>& array, QTableWidget *table, int addressColumn, int valueColumn, bool add = false);
+    void GetArrayFromTable(std::vector<std::pair<uintptr_t, int>>& array, QTableWidget *table, int addressColumn, int valueColumn, bool all = false);
 
     QString GetHotKeyString(HotKey hotKey);
 

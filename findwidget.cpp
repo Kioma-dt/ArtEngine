@@ -6,6 +6,7 @@ FindWidget::FindWidget(QWidget *parent)
     , ui(new Ui::FindWidget)
 {
     ui->setupUi(this);
+    this->setFixedSize(570, 330);
 
     ui->lineStartAddress->setText(QString::number(0x000000000000, 16).toUpper());
     ui->lineEndAddress->setText(QString::number(0x7fffffffffff, 16).toUpper());
@@ -76,8 +77,12 @@ void FindWidget::SlotStart()
             throw std::runtime_error("Неверный формат конечного адреса");
         }
 
-        startAddress = startAddress >= startAddressUser ? startAddress : startAddressUser;
-        endAddress = endAddress <= endAddressUser ? endAddress : endAddressUser;
+        if(startAddressUser > endAddressUser){
+            throw std::runtime_error("Начальный адрес должен быть не больше конечного");
+        }
+
+        startAddress = std::max(startAddress, startAddressUser);
+        endAddress = std::min(endAddress, endAddressUser);
 
         this->SlotExit();
         emit SignalFind(targetValue, startAddress, endAddress);
@@ -89,8 +94,8 @@ void FindWidget::SlotStart()
 
 void FindWidget::SlotExit()
 {
-    ui->lineStartAddress->setText(QString::number(0x000000000000, 16).toUpper());
-    ui->lineEndAddress->setText(QString::number(0x7fffffffffff, 16).toUpper());
-    ui->lineValue->clear();
+    // ui->lineStartAddress->setText(QString::number(0x000000000000, 16).toUpper());
+    // ui->lineEndAddress->setText(QString::number(0x7fffffffffff, 16).toUpper());
+    // ui->lineValue->clear();
     this->close();
 }
